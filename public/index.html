@@ -45,22 +45,34 @@
         <p>HEMEN SAKLAN! KOŞ!</p>
     </div>
 
-    <!-- Socket.io İstemci Kütüphanesi -->
+    <!-- Socket.io Kütüphanesi -->
     <script src="/socket.io/socket.io.js"></script>
     <script>
         const socket = io();
         const uyariKutusu = document.getElementById('uyari-kutusu');
 
+        // Alarm sesini hazırla
+        let ses = new Audio('https://www.myinstants.com/media/sounds/metal-gear-alert.mp3');
+        ses.load();
+
+        // Telefona ilk dokunulduğunda ses kilidini aç
+        document.body.addEventListener('click', () => {
+            ses.play().then(() => {
+                ses.pause();
+                ses.currentTime = 0;
+            }).catch(e => {});
+        }, { once: true });
+
         socket.on('uyari-goster', () => {
             uyariKutusu.style.display = 'block';
-            
-            // Alarm Sesi
-            let ses = new Audio('https://www.myinstants.com/media/sounds/metal-gear-alert.mp3');
+            ses.currentTime = 0;
             ses.play().catch(e => console.log("Ses çalınamadı:", e));
         });
 
         socket.on('uyari-kapat', () => {
             uyariKutusu.style.display = 'none';
+            ses.pause();
+            ses.currentTime = 0;
         });
     </script>
 </body>
