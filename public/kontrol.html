@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hasan Kontrol Paneli</title>
+    <style>
+        body {
+            background: #111;
+            color: white;
+            text-align: center;
+            font-family: Arial, sans-serif;
+            padding-top: 80px;
+        }
+        h1 { font-size: 28px; margin-bottom: 40px; }
+        button {
+            width: 80%;
+            max-width: 350px;
+            padding: 25px;
+            font-size: 22px;
+            margin: 20px auto;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            font-weight: bold;
+            display: block;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            transition: transform 0.1s;
+        }
+        button:active { transform: scale(0.95); }
+        .btn-kirmizi { background-color: #ff2222; color: white; }
+        .btn-yesil { background-color: #00C851; color: white; }
+    </style>
+</head>
+<body>
+    <h1>🎮 Hasan'ın Hayat Kontrolü</h1>
+    
+    <button class="btn-kirmizi" onclick="canAzaldi()">🚨 CANI AZALDI (Uyar!)</button>
+    <button class="btn-yesil" onclick="canNormal()">✅ DURUM GÜVENLİ (Kapat)</button>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io();
+
+        function canAzaldi() {
+            socket.emit('can-azaldi');
+        }
+
+        function canNormal() {
+            socket.emit('can-normal');
+        }
+    </script>
+</body>
+</html>
