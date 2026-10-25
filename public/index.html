@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HUD Alarm</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: transparent;
+            overflow: hidden;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        #uyari-kutusu {
+            display: none;
+            background: rgba(200, 0, 0, 0.95);
+            color: white;
+            padding: 30px 40px;
+            border-radius: 20px;
+            text-align: center;
+            border: 4px solid #ff3333;
+            box-shadow: 0 0 40px rgba(255, 0, 0, 0.9);
+            animation: titret 0.2s infinite alternate;
+        }
+
+        h1 { margin: 0; font-size: 36px; text-shadow: 2px 2px #000; }
+        p { margin: 10px 0 0 0; font-size: 22px; color: #ffeb3b; font-weight: bold; text-shadow: 1px 1px #000; }
+
+        @keyframes titret {
+            0% { transform: translate(-3px, 3px) scale(0.98); }
+            100% { transform: translate(3px, -3px) scale(1.02); }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="uyari-kutusu">
+        <h1>⚠️ CANIN ÇOK AZALDI! ⚠️</h1>
+        <p>HEMEN SAKLAN! KOŞ!</p>
+    </div>
+
+    <!-- Socket.io İstemci Kütüphanesi -->
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io();
+        const uyariKutusu = document.getElementById('uyari-kutusu');
+
+        socket.on('uyari-goster', () => {
+            uyariKutusu.style.display = 'block';
+            
+            // Alarm Sesi
+            let ses = new Audio('https://www.myinstants.com/media/sounds/metal-gear-alert.mp3');
+            ses.play().catch(e => console.log("Ses çalınamadı:", e));
+        });
+
+        socket.on('uyari-kapat', () => {
+            uyariKutusu.style.display = 'none';
+        });
+    </script>
+</body>
+</html>
